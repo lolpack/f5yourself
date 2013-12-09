@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="start"></div>
+    <div class="stop"></div>
+    <div class="page"></div>
+    <script>
+        var socket = io.connect("http://localhost");
+
+        $(document).ready(function() {
+
+            $('.start').on('click', function(event) {
+
+            });
+
+            $('.stop').on('click', function(event) {
+
+            });
+
+            socket.on('update', function(data) {
+
+            });
+
+        });
+    </script>
+</body>
+</html>
