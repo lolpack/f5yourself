@@ -1,0 +1,19 @@
+checkURL --> check HTML at url, and compare against previous version
+             if changed, notify all clients "watching" that URL
+             stretch goal: use If-Modified-Since so we don't have to compare each time
+changedHTML --> implement function to do our "diff", should be referenced in checkURL
+.start and stop clicks --> when stop is clicked, nuke websocket connection
+                           when start is clicked, start up websocket connection again
+client side "update" --> when client is notified of update, reload url and stick it in
+                         the iframe
+styling --> make it look pretty
+strech goal: analytics
+    server side --> maintain counter of number of users watching each url
+                    when new client connects, increment counter,
+                    emit "userCount" event to all clients (for that url)
+                    when client disconnects, decrement counter,
+                    emit "userCount" even to all clients (for that url)
+    client side --> on "userCount" event , update userCount variable
+                    d3, every 5 seconds, redraw chart showing last 5 minutes of
+                    number of users (userCount) watching the URL they're watching
+
