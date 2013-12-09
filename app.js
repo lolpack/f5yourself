@@ -31,4 +31,4 @@ var checkURL = function(url) {
 
 var PORT = 3000
 server.listen(PORT);
-console.log("Started teamedit on port " + PORT);
+console.log("Started f5yourself on port " + PORT);
