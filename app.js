@@ -21,12 +21,13 @@ var startTracking = function(url) {
     trackedURLs[url].on("connection", function(client) {
 
     });
-    checkURL(url);
+    var checkURLfunc = function(url) { checkURL(url); };
+    checkURL(checkURLfunc);
 };
 
-var checkURL = function(url) {
+var checkURL = function(urlFunc) {
     // ...
-    _.delay(function(url){ checkURL(url); }, 5000);
+    _.delay(urlFunc, 5000);
 }
 
 var PORT = 3000
