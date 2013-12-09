@@ -13,7 +13,7 @@ app.set("views", path.join(__dirname, "templates"))
 app.get("*", function(req, res) {
     var url = req.url;
     startTracking(url);
-    res.render("pageview", {});
+    res.render("pageview", {url: url});
 });
 
 var startTracking = function(url) {
