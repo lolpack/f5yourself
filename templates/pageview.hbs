@@ -2,25 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>F5 Yourself</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles.css" media="all">
+
 </head>
 <body>
-    <div class="start"></div>
-    <div class="stop"></div>
-    <div class="page"></div>
+<div id="container">
+    <h1>F5 Yourself</h1>
+    <h2>something something, flim flam</h2>
+    <div id="button-wrap" class="clearfix">
+        <button id="start">START</button>
+        <button id="stop" class="active">STOP</button>
+    </div>
+
+    <div id="page"></div>
+
+    <div id="chart"></div>
+</div><!-- /container -->
     <script>
         var socket = io.connect(window.location.origin + "{{url}}");
 
         $(document).ready(function() {
 
-            $('.start').on('click', function(event) {
-
+            $('#start').on('click', function(event) {
+                $(this).addClass('active');
+                $('#stop').removeClass();
             });
 
-            $('.stop').on('click', function(event) {
-
+            $('#stop').on('click', function(event) {
+                $(this).addClass('active');
+                $('#start').removeClass();
             });
 
             socket.on('update', function(data) {

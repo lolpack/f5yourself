@@ -1,0 +1,85 @@
+/* CSS Document */
+
+html, body, form, img {margin:0; padding:0; border:0}
+html {font-size:100%}
+body {
+	font:.75em/1.4 verdana,arial,sans-serif;
+	background:#aaa;
+	color:#000;
+}
+
+/* ---- universal properties ---- */
+p, ul, li, h1, h2, h3 {margin:0 0 1em; padding:0}
+
+abbr, acronym {cursor:help}
+
+.clearfix:after {
+  visibility:hidden;
+  display:block;
+  font-size:0;
+  content:" ";
+  clear:both;
+  height:0;
+}
+
+.clearfix {display:inline-block}
+
+/* start commented backslash hack \*/
+* html .clearfix {height:1%}
+.clearfix {display:block}
+/* close commented backslash hack */
+
+/* ---- lists ---- */
+ul {margin-left:35px}
+li {margin-bottom:5px}
+ul li ul {margin-top:10px}
+
+/* ---- headings ---- */
+h1 {font-size:40px; margin:0 10px 5px}
+h2 {font-size:20px; margin: 0 10px 10px}
+h3 {font-size:1.2em}
+
+/* ---- container ---- */
+#container {
+	margin:0 auto;
+	width:960px;
+	background:#ccc;
+}
+
+/* ---- buttons ---- */
+#button-wrap {
+	padding:20px 60px;
+}
+
+button {
+	width:250px;
+	height:75px;
+	color:#fff;
+	outline:none;
+	cursor:pointer;
+	font-size:30px;
+}
+
+button#start {
+	float:left;
+	border:2px solid #00a900;
+	background-color:#b2e5b2;
+}
+
+button#start.active {background-color:#00a900}
+
+button#stop {
+	float:right;
+	border:2px solid #d10000;
+	background-color:#f1b2b2;
+}
+
+button#stop.active {background-color:#d10000}
+
+/* ---- iFrame ---- */
+#page {
+	width:960px;
+	height:1000px;
+	overflow:scroll;
+	background:lavender;
+}
