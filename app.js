@@ -7,9 +7,6 @@ var path = require("path"),
 
 var trackedURLs = {};
 
-prevHTML = null;
-intervalID = null;
-
 app.set("views", path.join(__dirname, "templates"))
    .set("view engine", "hbs");
 
@@ -21,23 +18,26 @@ app.get("*", function(req, res) {
 });
 
 var startTracking = function(url) {
-    trackedURLs[url] = io.of(url);
-    trackedURLs[url].on("connection", function(client) {
+    trackedURLs[url] = {
+        sockets: io.of(url),
+        tracker: setInterval(checkURL, 5000, url),
+        html: null
+    };
+    trackedURLs[url].sockets.on("connection", function(client) {
 
     });
-    intervalID = setInterval(checkURL, 5000, url);
 };
 
-var stopTracking = function() {
-    clearInterval(intervalID)
+var stopTracking = function(url) {
+    clearInterval(trackedURLs[url].tracker);
 };
 
 var checkURL = function(url) {
     request(url, function (error, response, body) {
         console.log('made it here')
-        if (!error && response.statusCode == 200 && body !== prevHTML) {
-            prevHTML = body;
-            console.log(prevHTML);
+        if (!error && response.statusCode == 200 && body !== trackedURLs[url].html) {
+            trackedURLs[url].html = body;
+            console.log(body);
             updateIframe(url);
         }
     })
