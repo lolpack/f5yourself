@@ -1,11 +1,14 @@
 var path = require("path"),
     _ = require("underscore"),
-    app = (require("express"))(),
+    express = require("express"),
+    app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     request = require('request');
 
 var trackedURLs = {};
+
+app.use(express.static(__dirname));
 
 app.set("views", path.join(__dirname, "templates"))
    .set("view engine", "hbs");
