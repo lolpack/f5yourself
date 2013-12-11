@@ -16,7 +16,8 @@ app.set("views", path.join(__dirname, "templates"))
 
 app.get("*", function(req, res) {
     var url = req.url;
-    startTracking(url);
+    if (!trackedURLs[url] || trackedURLs[url].clientCount < 1)
+        startTracking(url);
     res.render("pageview", {url: url});
 });
 
