@@ -22,23 +22,28 @@
     <div id="chart"></div>
 </div><!-- /container -->
     <script>
-        var socket = io.connect(window.location.origin + "{{url}}");
-
         $(document).ready(function() {
+            var socket;
 
             $('#start').on('click', function(event) {
                 $(this).addClass('active');
                 $('#stop').removeClass();
+
+                socket = io.connect(window.location.origin + "{{url}}");
+                socket.on('update', function(data) {
+                    console.log(data);
+                    $('#page').attr('src', 'http://' + data.url);
+                });
             });
 
             $('#stop').on('click', function(event) {
                 $(this).addClass('active');
                 $('#start').removeClass();
+
+                socket.disconnect();
             });
 
-            socket.on('update', function(data) {
 
-            });
 
         });
     </script>
