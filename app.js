@@ -1,9 +1,12 @@
 var path = require("path"),
     _ = require("underscore"),
-    app = (require("express"))(),
+    express = require("express")
+    app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     request = require('request');
+
+app.use(express.static(path.join(__dirname, 'static')));
 
 var trackedURLs = {};
 
