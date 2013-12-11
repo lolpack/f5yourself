@@ -56,7 +56,7 @@ var checkURL = function(url) {
             "http://" + url,
             ["http://code.jquery.com/jquery.js"],
                 function (errors, window) {
-                    var body = window.$('body').html();
+                    var body = window.$('body p').html();
                     console.log(window);
                     if (body !== trackedURLs[url].html) {
                         trackedURLs[url].html = body;
