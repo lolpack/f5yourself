@@ -45,14 +45,17 @@ var stopTracking = function(url) {
 };
 
 var checkURL = function(url) {
-    request(url, function (error, response, body) {
-        console.log('made it here')
-        if (!error && response.statusCode == 200 && body !== trackedURLs[url].html) {
-            trackedURLs[url].html = body;
-            console.log(body);
-            updateIframe(url);
-        }
-    })
+    // console.log("checking:", url);
+    // console.log("clients:", trackedURLs[url].clientCount);
+    if (trackedURLs[url].clientCount) {
+        var requestURL = "http://" + url
+        request(requestURL, function (error, response, body) {
+            if (!error && response.statusCode == 200 && body !== trackedURLs[url].html) {
+                trackedURLs[url].html = body;
+                updateIframe(url);
+            }
+        });
+    }
 };
 
 var updateIframe = function (url) {
