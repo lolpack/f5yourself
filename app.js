@@ -4,7 +4,8 @@ var path = require("path"),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
-    request = require('request');
+    request = require('request'),
+    jsdom = require("jsdom");
 
 app.use(express.static(path.join(__dirname, 'static')));
 
@@ -51,14 +52,21 @@ var checkURL = function(url) {
     // console.log("checking:", url);
     // console.log("clients:", trackedURLs[url].clientCount);
     if (trackedURLs[url].clientCount) {
-        var requestURL = "http://" + url
-        request(requestURL, function (error, response, body) {
-            if (!error && response.statusCode == 200 && body !== trackedURLs[url].html) {
-                trackedURLs[url].html = body;
-                updateIframe(url);
+        jsdom.env(
+            "http://" + url,
+            ["http://code.jquery.com/jquery.js"],
+                function (errors, window) {
+                    var body = window.$('body').html();
+                    console.log(window);
+                    if (body !== trackedURLs[url].html) {
+                        trackedURLs[url].html = body;
+                        console.log("TYPE");
+                        console.log(body);
+                        updateIframe(url);
+                }
             }
-        });
-    }
+        );
+    };
 };
 
 var updateIframe = function (url) {
