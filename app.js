@@ -24,10 +24,18 @@ var startTracking = function(url) {
     trackedURLs[url] = {
         sockets: io.of(url),
         tracker: setInterval(checkURL, 5000, url),
-        html: null
+        html: null,
+        clientCount: 0        
     };
     trackedURLs[url].sockets.on("connection", function(client) {
+        trackedURLs[url].clientCount++
 
+        client.on("disconnect", function() {
+            trackedURLs[url].clientCount--
+            if (trackedURLs[url].clientCount < 1) {
+                stopTracking(url);
+            }
+        });
     });
 };
 
