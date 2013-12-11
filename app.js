@@ -53,5 +53,3 @@ var updateIframe = function (url) {
 var PORT = 3000
 server.listen(PORT);
 console.log("Started f5yourself on port " + PORT);
-
-startTracking("http://www.homestarrunner.com/")
