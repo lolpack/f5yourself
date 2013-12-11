@@ -30,11 +30,14 @@ var startTracking = function(url) {
     };
     trackedURLs[url].sockets.on("connection", function(client) {
         trackedURLs[url].clientCount++
+        trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
 
         client.on("disconnect", function() {
             trackedURLs[url].clientCount--
             if (trackedURLs[url].clientCount < 1) {
                 stopTracking(url);
+            } else {
+                trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
             }
         });
     });
