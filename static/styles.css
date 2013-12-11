@@ -51,7 +51,8 @@ h3 {font-size:1.2em}
 	padding:20px 60px;
 }
 
-button {
+button#start,
+button#stop {
 	width:250px;
 	height:75px;
 	color:#fff;
@@ -77,9 +78,25 @@ button#stop {
 button#stop.active {background-color:#d10000}
 
 /* ---- iFrame ---- */
-#page {
-	width:960px;
+iframe#page {
+	width:940px;
 	height:1000px;
+	margin:0 10px;
 	overflow:scroll;
-	background:lavender;
+	background-color:lavender;
+}
+
+/* ---- chart ---- */
+#chart-wrap {
+	position:fixed;
+	bottom:0;
+	width:100%;
+	background:gray;
+}
+
+#chart {
+	margin:0 auto;
+	width:940px;
+	height:100px;
+	overflow:visible;
 }
