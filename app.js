@@ -56,7 +56,7 @@ var checkURL = function(url) {
 };
 
 var updateIframe = function (url) {
-    //Send update 
+    trackedURLs[url].sockets.emit("update", { url: url, time: (new Date()).getTime() });
 }
 
 var PORT = 3000
