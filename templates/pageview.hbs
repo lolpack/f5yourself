@@ -43,7 +43,7 @@
                 $(this).addClass('active');
                 $('#stop').removeClass();
 
-                socket = io.connect(window.location.origin + "{{url}}");
+                socket = io.connect(window.location.origin + "/{{url}}");
                 socket.on('update', function(data) {
                     console.log(data);
                     $('#page').attr('src', 'http://' + data.url);

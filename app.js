@@ -23,7 +23,7 @@ app.get("*", function(req, res) {
 
 var startTracking = function(url) {
     trackedURLs[url] = {
-        sockets: io.of(url),
+        sockets: io.of("/" + url),
         tracker: setInterval(checkURL, 5000, url),
         html: null,
         clientCount: 0        
