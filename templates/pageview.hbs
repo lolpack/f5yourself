@@ -22,6 +22,20 @@
     <div id="chart"></div>
 </div><!-- /container -->
     <script>
+        var clientCount = 0;
+        var clientHistoryInterval = 2000;  // in milliseconds
+        var clientHistoryMaxLength = 150;  // in intervals
+        var clientHistory = [];
+        var chartUpdater;
+
+        var updateClientHistory = function() {
+            if (clientCount) {
+                clientHistory.push(clientCount);
+                if (clientHistory.length > clientHistoryMaxLength)
+                    clientHistory.shift();
+            }
+        };
+
         $(document).ready(function() {
             var socket;
 
@@ -34,6 +48,12 @@
                     console.log(data);
                     $('#page').attr('src', 'http://' + data.url);
                 });
+                socket.on('clientCount', function(data) {
+                    console.log(data);
+                    clientCount = window.clientCount = data.clients;
+                });
+
+                chartUpdater = setInterval(updateClientHistory, clientHistoryInterval);
             });
 
             $('#stop').on('click', function(event) {
@@ -41,10 +61,8 @@
                 $('#start').removeClass();
 
                 socket.disconnect();
+                clearInterval(chartUpdater);
             });
-
-
-
         });
     </script>
 </body>
