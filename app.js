@@ -5,7 +5,7 @@ var path = require("path"),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     request = require('request'),
-    jsdom = require("jsdom");
+    cheerio = require('cheerio');
 
 app.use(express.static(path.join(__dirname, 'static')));
 
@@ -44,6 +44,7 @@ var startTracking = function(url) {
     });
 };
 
+
 var stopTracking = function(url) {
     clearInterval(trackedURLs[url].tracker);
 };
@@ -52,22 +53,26 @@ var checkURL = function(url) {
     // console.log("checking:", url);
     // console.log("clients:", trackedURLs[url].clientCount);
     if (trackedURLs[url].clientCount) {
-        jsdom.env(
-            "http://" + url, //GET html
-            ["http://code.jquery.com/jquery.js"], //Inject jquery into dom
-                function (errors, window) {
-                    var body = window.$('body p').html();
-                    var timestamp = new Date().getTime();
-                    if (body !== trackedURLs[url].html) { //No longer checking for errors on GET req. May need to look into this
-                        trackedURLs[url].html = body;
-                        console.log(timestamp -= new Date().getTime());
-                        console.log(body);
-                        timestamp = new Date().getTime()
-                        updateIframe(url);
-                    }
-                }
-        );
-    };
+        var requestURL = "http://" + url;
+        request(requestURL, function (error, response, body) {
+            //console.log(body);
+            $ = cheerio.load(body);
+            var timestamp = new Date().getTime();
+            var bodyHTML = null;
+            bodyParas = $('body').find('p').each(function () {
+                bodyHTML += this;
+            });
+                            console.log(bodyHTML);
+
+            if (!error && response.statusCode == 200 && bodyHTML !== trackedURLs[url].html) {
+                console.log(timestamp -= new Date().getTime());
+
+                trackedURLs[url].html = bodyHTML;
+                timestamp = new Date().getTime();
+                updateIframe(url);
+            }
+        });
+    }
 };
 
 var updateIframe = function (url) {
