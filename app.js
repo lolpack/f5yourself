@@ -53,18 +53,19 @@ var checkURL = function(url) {
     // console.log("clients:", trackedURLs[url].clientCount);
     if (trackedURLs[url].clientCount) {
         jsdom.env(
-            "http://" + url,
-            ["http://code.jquery.com/jquery.js"],
+            "http://" + url, //GET html
+            ["http://code.jquery.com/jquery.js"], //Inject jquery into dom
                 function (errors, window) {
                     var body = window.$('body p').html();
-                    console.log(window);
-                    if (body !== trackedURLs[url].html) {
+                    var timestamp = new Date().getTime();
+                    if (body !== trackedURLs[url].html) { //No longer checking for errors on GET req. May need to look into this
                         trackedURLs[url].html = body;
-                        console.log("TYPE");
+                        console.log(timestamp -= new Date().getTime());
                         console.log(body);
+                        timestamp = new Date().getTime()
                         updateIframe(url);
+                    }
                 }
-            }
         );
     };
 };
