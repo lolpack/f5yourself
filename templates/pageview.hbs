@@ -5,32 +5,46 @@
     <title>F5 Yourself</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <link type="text/css" rel="stylesheet" href="/styles.css" media="all">
 
 </head>
 <body>
 <div id="container">
     <h1>F5 Yourself</h1>
-    <h2>something something, flim flam</h2>
+
+    <!--<div id="form-input">
+        <form>
+            <label for="siteURL">Enter website URL</label><br>
+            <input type='text' name='siteURL' id='siteURL'>
+            <button id='commitURL' class='submit'>Commit</button>
+        </form>
+    </div>-->
+
     <div id="button-wrap" class="clearfix">
         <button id="start">START</button>
         <button id="stop" class="active">STOP</button>
     </div>
 
-    <iframe id="page"></iframe>
-
-    <div id="chart"></div>
+    <iframe id="page" frameborder="0"></iframe>
 </div><!-- /container -->
+
+<div id="chart-wrap">
+    <div id="chart"></div>
+</div>
     <script>
         var clientCount = 0;
         var clientHistoryInterval = 2000;  // in milliseconds
-        var clientHistoryMaxLength = 150;  // in intervals
+        //var clientHistoryMaxLength = 150;  // in intervals
+        var clientHistoryMaxLength = 15;
         var clientHistory = [];
         var chartUpdater;
+        var dataset = clientHistory;
 
         var updateClientHistory = function() {
             if (clientCount) {
                 clientHistory.push(clientCount);
+
                 if (clientHistory.length > clientHistoryMaxLength)
                     clientHistory.shift();
             }
@@ -46,7 +60,10 @@
                 socket = io.connect(window.location.origin + "/{{url}}");
                 socket.on('update', function(data) {
                     console.log(data);
-                    $('#page').attr('src', 'http://' + data.url);
+                    $('#page').attr('src', 'http://' + data.url);                    
+                    
+                    $('#chart').html(''); // clear the chart...
+                    drawChart(dataset); // ...and redraw it ~ch
                 });
                 socket.on('clientCount', function(data) {
                     console.log(data);
@@ -64,6 +81,56 @@
                 clearInterval(chartUpdater);
             });
         });
+
+        // D3
+        var w = 940;
+        var h = 100;
+        var barPadding = 1;
+
+        //Create SVG element
+        function drawChart(dataset) {
+            var svg = d3.select("#chart")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
+            svg.selectAll("rect")
+               .data(dataset)
+               .enter()
+               .append("rect")
+               .attr("x", function(d, i) {
+                    return i * (w / dataset.length);
+               })
+               .attr("y", function(d) {
+                    return h - (d * 4);
+               })
+               .attr("width", w / dataset.length - barPadding)
+               .attr("height", function(d) {
+                    //return d * 4;
+                    return d * 100
+               })
+               .attr("fill", function(d) {
+                    return "rgb(0, 0, " + (d * 10) + ")";
+               });
+
+            svg.selectAll("text")
+                .data(dataset)
+                .enter()
+                .append("text")
+                .text(function(d) {
+                        return d;
+                })
+                .attr("text-anchor", "middle")
+                .attr("x", function(d, i) {
+                        return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
+                })
+                .attr("y", function(d) {
+                        return 22;
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "11px")
+                .attr("fill", "white");
+            }
     </script>
 </body>
 </html>
