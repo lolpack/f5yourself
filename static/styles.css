@@ -41,7 +41,7 @@ h3 {font-size:1.2em}
 
 /* ---- container ---- */
 #container {
-	margin:0 auto;
+	margin:0 auto 100px;
 	width:960px;
 	background:#ccc;
 }
@@ -81,7 +81,7 @@ button#stop.active {background-color:#d10000}
 iframe#page {
 	width:940px;
 	height:1000px;
-	margin:0 10px;
+	margin:0 10px 10px;
 	overflow:scroll;
 	background-color:lavender;
 }

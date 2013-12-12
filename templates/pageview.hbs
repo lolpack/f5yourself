@@ -35,8 +35,7 @@
     <script>
         var clientCount = 0;
         var clientHistoryInterval = 2000;  // in milliseconds
-        //var clientHistoryMaxLength = 150;  // in intervals
-        var clientHistoryMaxLength = 15;
+        var clientHistoryMaxLength = 15;  // in intervals
         var clientHistory = [];
         var chartUpdater;
         var dataset = clientHistory;
@@ -48,6 +47,10 @@
                 if (clientHistory.length > clientHistoryMaxLength)
                     clientHistory.shift();
             }
+
+
+            $('#chart').html(''); // clear the chart...
+            drawChart(dataset); // ...and redraw it ~ch
         };
 
         $(document).ready(function() {
@@ -60,11 +63,9 @@
                 socket = io.connect(window.location.origin + "/{{url}}");
                 socket.on('update', function(data) {
                     console.log(data);
-                    $('#page').attr('src', 'http://' + data.url);                    
-                    
-                    $('#chart').html(''); // clear the chart...
-                    drawChart(dataset); // ...and redraw it ~ch
+                    $('#page').attr('src', 'http://' + data.url);                 
                 });
+
                 socket.on('clientCount', function(data) {
                     console.log(data);
                     clientCount = window.clientCount = data.clients;
@@ -105,8 +106,8 @@
                     return h - (d * 4);
                })
                .attr("width", w / dataset.length - barPadding)
+               // .attr("width", w / clientHistoryMaxLength - barPadding)
                .attr("height", function(d) {
-                    //return d * 4;
                     return d * 100
                })
                .attr("fill", function(d) {
