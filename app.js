@@ -66,7 +66,7 @@ var checkURL = function(url) {
             bodyParas = $('body').find('p').each(function () {
                 bodyHTML += this;
             });
-                            console.log(bodyHTML);
+                            // console.log(bodyHTML);
 
             if (!error && response.statusCode == 200 && bodyHTML !== trackedURLs[url].html) {
                 console.log(timestamp -= new Date().getTime());
