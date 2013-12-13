@@ -54,9 +54,9 @@ var stopTracking = function(url) {
 };
 
 var checkURL = function(url) {
-    // console.log("checking:", url);
+    console.log("checking:", url);
     // console.log("clients:", trackedURLs[url].clientCount);
-    if (trackedURLs[url].clientCount) {
+    if (trackedURLs[url]) {
         var requestURL = "http://" + url;
         request(requestURL, function (error, response, body) {
             //console.log(body);
