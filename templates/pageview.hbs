@@ -36,7 +36,8 @@
         var clientCount = 0;
         var clientHistoryInterval = 2000;  // in milliseconds
         var clientHistoryMaxLength = 15;  // in intervals
-        var clientHistory = [];
+        var clientHistory = Array.apply(null, new Array(clientHistoryMaxLength))
+                                 .map(Number.prototype.valueOf, 0);
         var chartUpdater;
         var dataset = clientHistory;
 
