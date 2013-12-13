@@ -79,6 +79,6 @@ var updateIframe = function (url) {
     trackedURLs[url].sockets.emit("update", { url: url, time: (new Date()).getTime() });
 }
 
-var PORT = 3000
-server.listen(PORT);
-console.log("Started f5yourself on port " + PORT);
+var port = process.env.PORT || 3000;
+server.listen(port);
+console.log("Started f5yourself on port " + port);
