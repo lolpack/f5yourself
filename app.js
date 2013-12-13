@@ -17,8 +17,10 @@ app.set("views", path.join(__dirname, "templates"))
 
 app.get("*", function(req, res) {
     var url = req.url.slice(1);
-    if (!trackedURLs[url] || trackedURLs[url].clientCount < 1)
+    if (!trackedURLs[url]) {
+        console.log('starting to track:', url)
         startTracking(url);
+    }
     res.render("pageview", {url: url});
 });
 
@@ -46,7 +48,9 @@ var startTracking = function(url) {
 
 
 var stopTracking = function(url) {
+    console.log('no longer tracking', url);
     clearInterval(trackedURLs[url].tracker);
+    trackedURLs[url] = undefined;
 };
 
 var checkURL = function(url) {
