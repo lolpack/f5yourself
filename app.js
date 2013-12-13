@@ -29,20 +29,30 @@ var startTracking = function(url) {
         sockets: io.of("/" + url),
         tracker: setInterval(checkURL, 5000, url),
         html: null,
-        clientCount: 0        
+        clientCount: 0,
+        clients: []
     };
     trackedURLs[url].sockets.on("connection", function(client) {
-        trackedURLs[url].clientCount++
-        trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
+        if (!_.contains(trackedURLs[url].clients, client.id)) {
+            trackedURLs[url].clients.push(client.id);
+            trackedURLs[url].clientCount++
+            console.log('new client:', client.id);
+            console.log("clients for " + url + " : " + trackedURLs[url].clientCount);
+            trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
 
-        client.on("disconnect", function() {
-            trackedURLs[url].clientCount--
-            if (trackedURLs[url].clientCount < 1) {
-                stopTracking(url);
-            } else {
-                trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
-            }
-        });
+            client.on("disconnect", function() {
+                if (_.contains(trackedURLs[url].clients, client.id)) {
+                    console.log('client disconnected');
+                    trackedURLs[url].clientCount--
+                }
+                console.log("clients for " + url + " : " + trackedURLs[url].clientCount);
+                if (trackedURLs[url].clientCount < 1) {
+                    stopTracking(url);
+                } else {
+                    trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
+                }
+            });
+        }
     });
 };
 
