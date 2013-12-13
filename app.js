@@ -1,6 +1,6 @@
 var path = require("path"),
     _ = require("underscore"),
-    express = require("express")
+    express = require("express"),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
@@ -30,11 +30,11 @@ var startTracking = function(url) {
         clientCount: 0        
     };
     trackedURLs[url].sockets.on("connection", function(client) {
-        trackedURLs[url].clientCount++
+        trackedURLs[url].clientCount++;
         trackedURLs[url].sockets.emit("clientCount", {clients: trackedURLs[url].clientCount});
 
         client.on("disconnect", function() {
-            trackedURLs[url].clientCount--
+            trackedURLs[url].clientCount--;
             if (trackedURLs[url].clientCount < 1) {
                 stopTracking(url);
             } else {
@@ -62,7 +62,8 @@ var checkURL = function(url) {
             bodyParas = $('body').find('p').each(function () {
                 bodyHTML += this;
             });
-                            console.log(bodyHTML);
+            
+            console.log(bodyHTML);
 
             if (!error && response.statusCode == 200 && bodyHTML !== trackedURLs[url].html) {
                 console.log(timestamp -= new Date().getTime());
@@ -77,7 +78,7 @@ var checkURL = function(url) {
 
 var updateIframe = function (url) {
     trackedURLs[url].sockets.emit("update", { url: url, time: (new Date()).getTime() });
-}
+};
 
 var port = process.env.PORT || 3000;
 server.listen(port);
