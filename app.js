@@ -55,8 +55,7 @@ var checkURL = function(url) {
     if (trackedURLs[url].clientCount) {
         var requestURL = "http://" + url;
         request(requestURL, function (error, response, body) {
-            //console.log(body);
-            $ = cheerio.load(body);
+            var $ = cheerio.load(body);
             var timestamp = new Date().getTime();
             var bodyHTML = null;
             bodyParas = $('body').find('p').each(function () {
@@ -65,7 +64,7 @@ var checkURL = function(url) {
             
             console.log(bodyHTML);
 
-            if (!error && response.statusCode == 200 && bodyHTML !== trackedURLs[url].html) {
+            if (!error && response.statusCode === 200 && bodyHTML !== trackedURLs[url].html) {
                 console.log(timestamp -= new Date().getTime());
 
                 trackedURLs[url].html = bodyHTML;
