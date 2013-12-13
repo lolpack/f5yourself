@@ -55,32 +55,40 @@
         };
 
         $(document).ready(function() {
-            var socket;
+            var socket = null;
 
             $('#start').on('click', function(event) {
-                $(this).addClass('active');
-                $('#stop').removeClass();
+                if (!socket) {
+                    $(this).addClass('active');
+                    $('#stop').removeClass();
 
-                socket = io.connect(window.location.origin + "/{{url}}");
-                socket.on('update', function(data) {
-                    console.log(data);
-                    $('#page').attr('src', 'http://' + data.url);                 
-                });
+                    $('#page').attr('src', 'http://{{url}}');                 
 
-                socket.on('clientCount', function(data) {
-                    console.log(data);
-                    clientCount = window.clientCount = data.clients;
-                });
+                    console.log('connecting to ' + window.location.origin + "/{{url}}");
+                    socket = io.connect(window.location.origin + "/{{url}}");
+                    socket.on('update', function(data) {
+                        console.log(data);
+                        $('#page').attr('src', 'http://' + data.url);                 
+                    });
 
-                chartUpdater = setInterval(updateClientHistory, clientHistoryInterval);
+                    socket.on('clientCount', function(data) {
+                        console.log(data);
+                        clientCount = window.clientCount = data.clients;
+                    });
+
+                    chartUpdater = setInterval(updateClientHistory, clientHistoryInterval);
+                }
             });
 
             $('#stop').on('click', function(event) {
-                $(this).addClass('active');
-                $('#start').removeClass();
+                if (socket) {
+                    $(this).addClass('active');
+                    $('#start').removeClass();
 
-                socket.disconnect();
-                clearInterval(chartUpdater);
+                    socket.disconnect();
+                    socket = null;
+                    clearInterval(chartUpdater);
+                }
             });
         });
 
