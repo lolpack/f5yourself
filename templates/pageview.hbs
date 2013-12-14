@@ -57,38 +57,48 @@
 
         $(document).ready(function() {
             var socket = null;
+            var status = "disconnected";
 
             $('#start').on('click', function(event) {
-                if (!socket) {
+                if (status === "disconnected") {
+                    console.log('connecting to ' + window.location.origin + "/{{url}}");
                     $(this).addClass('active');
                     $('#stop').removeClass();
 
-                    $('#page').attr('src', 'http://{{url}}');                 
+                    if (!socket) {
+                        $('#page').attr('src', 'http://{{url}}');                 
 
-                    console.log('connecting to ' + window.location.origin + "/{{url}}");
-                    socket = io.connect(window.location.origin + "/{{url}}");
-                    socket.on('update', function(data) {
-                        console.log(data);
-                        $('#page').attr('src', 'http://' + data.url);                 
-                    });
+                        socket = io.connect(window.location.origin + "/{{url}}");
+                        socket.on('update', function(data) {
+                            console.log(data);
+                            $('#page').attr('src', 'http://' + data.url);                 
+                        });
 
-                    socket.on('clientCount', function(data) {
-                        console.log(data);
-                        clientCount = window.clientCount = data.clients;
-                    });
+                        socket.on('clientCount', function(data) {
+                            console.log(data);
+                            clientCount = window.clientCount = data.clients;
+                        });
 
+                    } else {
+                        socket.socket.reconnect();
+                    }
                     chartUpdater = setInterval(updateClientHistory, clientHistoryInterval);
+                    status = "connected";
                 }
             });
 
             $('#stop').on('click', function(event) {
-                if (socket) {
+                if (status === "connected") {
                     $(this).addClass('active');
                     $('#start').removeClass();
 
                     socket.disconnect();
-                    socket = null;
+                    socket.socket.disconnect();
+                    socket.removeAllListeners();
+                    socket.socket.removeAllListeners();
+
                     clearInterval(chartUpdater);
+                    status = "disconnected";
                 }
             });
         });
