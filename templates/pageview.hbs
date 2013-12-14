@@ -10,16 +10,14 @@
 
 </head>
 <body>
-<div id="container">
-    <h1>F5 Yourself</h1>
 
-    <!--<div id="form-input">
-        <form>
-            <label for="siteURL">Enter website URL</label><br>
-            <input type='text' name='siteURL' id='siteURL'>
-            <button id='commitURL' class='submit'>Commit</button>
-        </form>
-    </div>-->
+<div id="header-wrap">
+    <div id="header">
+        <h1>F5 Yourself</h1>
+    </div>
+</div>
+
+<div id="container">
 
     <div id="button-wrap" class="clearfix">
         <button id="start">START</button>
@@ -30,8 +28,10 @@
 </div><!-- /container -->
 
 <div id="chart-wrap">
-    <p id="chartTitle"> Other users viewing this page </p>
-    <div id="chart"></div>
+    <div id="chart-container">
+        <p id="chartTitle"> Other users viewing this page </p>
+        <div id="chart"></div>
+    </div>
 </div>
     <script>
         var clientCount = 0;
@@ -118,7 +118,7 @@
                .attr("width", w / dataset.length - barPadding)
                // .attr("width", w / clientHistoryMaxLength - barPadding)
                .attr("height", function(d) {
-                    return d * 100
+                    return d * 120
                })
                .attr("fill", function(d) {
                     return "rgb(0, 0, " + (d * 10) + ")";

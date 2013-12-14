@@ -4,7 +4,7 @@ html, body, form, img {margin:0; padding:0; border:0}
 html {font-size:100%}
 body {
 	font:.75em/1.4 verdana,arial,sans-serif;
-	background:#aaa;
+	background:#cdcac0 url(body_bg.gif) repeat-x 0 0;
 	color:#000;
 }
 
@@ -35,18 +35,34 @@ li {margin-bottom:5px}
 ul li ul {margin-top:10px}
 
 /* ---- headings ---- */
-h1 {font-size:40px; margin:0 10px 5px;
+h1 {
+	font-size:40px; margin:0 0 5px;
 	font-weight: 200;
+	color:#fff;
 	text-shadow: 1px 1px #EEE;
-	font-family:  "Helvetica Neue", Helvetica, sans-serif}
+	font-family:  "Helvetica Neue", Helvetica, sans-serif;
+}
+
 h2 {font-size:20px; margin: 0 10px 10px}
 h3 {font-size:1.2em}
 
 /* ---- container ---- */
 #container {
-	margin:0 auto 100px;
+	margin:0 auto 140px;
 	width:960px;
-	background:#ccc;
+	padding:0 20px;
+}
+
+/* ---- header ---- */
+#header-wrap {
+	width:100%;
+	background:black;
+	box-shadow: 0 0 10px black
+}
+
+#header {
+	margin:0 auto;
+	width:960px;
 }
 
 /* ---- buttons ---- */
@@ -62,6 +78,7 @@ button#stop {
 	outline:none;
 	cursor:pointer;
 	font-size:30px;
+	border-radius:10px;
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 
 }
@@ -84,10 +101,12 @@ button#stop.active {background-color:#d10000}
 
 /* ---- iFrame ---- */
 iframe#page {
-	width:940px;
+	width:938px;
 	height:1000px;
 	margin:0 10px 10px;
 	overflow:scroll;
+	border:1px solid #999;
+	xxxbox-shadow: 0 0 12px rgba(171,139,110,.5);
 	background-color:lavender;
 }
 
@@ -99,11 +118,17 @@ iframe#page {
 	background:gray;
 }
 
+#chart-container {
+	margin:0 auto;
+	width:1020px;
+	padding:0 0 20px;
+	background:url(scale.png) no-repeat 0 0;
+}
+
 #chart {
 	margin:0 auto;
 	width:940px;
 	height:100px;
-	overflow:visible;
 }
 
 #chartTitle {
