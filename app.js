@@ -1,6 +1,6 @@
 var path = require("path"),
     _ = require("underscore"),
-    express = require("express")
+    express = require("express"),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
@@ -69,16 +69,15 @@ var checkURL = function(url) {
     if (trackedURLs[url]) {
         var requestURL = "http://" + url;
         request(requestURL, function (error, response, body) {
-            //console.log(body);
-            $ = cheerio.load(body);
+            var $ = cheerio.load(body);
             var timestamp = new Date().getTime();
             var bodyHTML = null;
             bodyParas = $('body').find('p').each(function () {
                 bodyHTML += this;
             });
-                            // console.log(bodyHTML);
+            // console.log(bodyHTML);
 
-            if (!error && response.statusCode == 200 && bodyHTML !== trackedURLs[url].html) {
+            if (!error && response.statusCode === 200 && bodyHTML !== trackedURLs[url].html) {
                 console.log(timestamp -= new Date().getTime());
 
                 trackedURLs[url].html = bodyHTML;
@@ -91,7 +90,7 @@ var checkURL = function(url) {
 
 var updateIframe = function (url) {
     trackedURLs[url].sockets.emit("update", { url: url, time: (new Date()).getTime() });
-}
+};
 
 var port = process.env.PORT || 3000;
 server.listen(port);
